@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Security.Cryptography;
-using System.Text;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Windows.Forms;
 
 namespace cryptolab2
 {
-    class DESutils
+    internal class DESutils
     {
-        private readonly DES DESalg;
-        private readonly TextBox _output;
+        private readonly byte[] _IV;
         private readonly byte[] _key1;
         private readonly byte[] _key2;
-        private readonly byte[] _IV;
+        private readonly TextBox _output;
+        private readonly DES DESalg;
 
         public DESutils(TextBox outpuTextBox)
         {
@@ -28,9 +28,9 @@ namespace cryptolab2
             DESalg.GenerateKey();
             _key2 = DESalg.Key;
             _IV = DESalg.IV;*/
-            _key1 = new byte[] { 0x14, 0x88, 0x22, 0x88, 0x77, 0x14, 0x88, 0xAA };
-            _key2 = new byte[] { 0xDE, 0xAD, 0xBE, 0xEF, 0x14, 0x88, 0x22, 0x80 };
-            _IV = new byte[] { 0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6, 0x07, 0x08 };
+            _key1 = new byte[] {0x14, 0x88, 0x22, 0x88, 0x77, 0x14, 0x88, 0xAA};
+            _key2 = new byte[] {0xDE, 0xAD, 0xBE, 0xEF, 0x14, 0x88, 0x22, 0x80};
+            _IV = new byte[] {0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6, 0x07, 0x08};
         }
 
         public byte[] GetKey1()
@@ -70,7 +70,6 @@ namespace cryptolab2
             {
                 _output.AppendText(string.Format("A file error occurred: {0}\n", e.Message));
             }
-
         }
 
         public void DecryptFile(string inputFileName, string outputFileName)
@@ -186,14 +185,13 @@ namespace cryptolab2
                 Array.Copy(ret, 0, newRes, 0, ret.Length);
                 var checkSum = EncryptBytes(ret.Skip(ret.Length - 8).ToArray(), true);
                 Array.Copy(checkSum, 0, newRes, ret.Length, 8);
-                return newRes;  
+                return newRes;
             }
             catch (CryptographicException e)
             {
                 _output.AppendText(string.Format("A Cryptographic error occurred: {0}", e.Message));
                 return null;
             }
-
         }
 
         public string DecryptText(string data)

@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace cryptolab2
@@ -22,7 +16,7 @@ namespace cryptolab2
 
         private void browseEncrypt_Click(object sender, EventArgs e)
         {
-            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 encryptFileBox.Text = openFileDialog1.FileName;
             }
@@ -30,7 +24,7 @@ namespace cryptolab2
 
         private void browseDecrypt_Click(object sender, EventArgs e)
         {
-            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 decryptFileBox.Text = openFileDialog1.FileName;
             }
@@ -41,7 +35,8 @@ namespace cryptolab2
             if (encryptInputBox.Text != "")
             {
                 outputTextBox.AppendText(string.Format("Encoding of \"{0}\" started:\n", encryptInputBox.Text));
-                outputTextBox.AppendText(string.Format("BYTES \"{0}\"\n", BitConverter.ToString(new ASCIIEncoding().GetBytes(encryptInputBox.Text))));
+                outputTextBox.AppendText(string.Format("BYTES \"{0}\"\n",
+                    BitConverter.ToString(new ASCIIEncoding().GetBytes(encryptInputBox.Text))));
                 var result = _cryptolizer.EncryptText(encryptInputBox.Text);
                 outputTextBox.AppendText("Result:\n");
                 outputTextBox.AppendText(string.Format("BYTES: \"{0}\"\n", BitConverter.ToString(result)));
@@ -52,7 +47,8 @@ namespace cryptolab2
                 outputTextBox.AppendText(string.Format("Decoding of \"{0}\" started:\n", decryptInputBox.Text));
                 var result = _cryptolizer.DecryptText(decryptInputBox.Text).TrimEnd('\0');
                 outputTextBox.AppendText("Result:\n");
-                outputTextBox.AppendText(string.Format("BYTES: \"{0}\"\n", BitConverter.ToString(new ASCIIEncoding().GetBytes(result))));
+                outputTextBox.AppendText(string.Format("BYTES: \"{0}\"\n",
+                    BitConverter.ToString(new ASCIIEncoding().GetBytes(result))));
                 outputTextBox.AppendText(string.Format("STRING: \"{0}\"\n", result));
                 decryptInputBox.Text = "";
             }
